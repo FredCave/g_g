@@ -1,0 +1,172 @@
+#wpadminbar {
+    display: none !important;
+}
+
+/************************************************
+
+    CSS RESET
+
+************************************************/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } /* HTML5 display-role reset for older browsers */ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block; } body {line-height: 1; } ol, ul {list-style: none; } blockquote, q {quotes: none; } blockquote:before, blockquote:after, q:before, q:after {content: ''; content: none; } table {border-collapse: collapse; border-spacing: 0; }
+
+/************************************************
+
+    HOLDING
+
+************************************************/
+
+#holding p {
+	margin: 32px 36px 0px 36px;
+	font-family: sans-serif;
+}
+
+.loading:after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ellipsis steps(4,end) 2000ms infinite;      
+    animation: ellipsis steps(4,end) 2000ms infinite;
+    content: "\2026";
+    width: 0px;
+}
+
+@keyframes ellipsis {
+    to {
+        width: 20px;    
+    }
+}
+
+@-webkit-keyframes ellipsis {
+    to {
+        width: 20px;    
+    }
+}
+
+/*********************************************
+
+    GENERAL
+
+*********************************************/
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: #000;
+    color: white;
+    font-family: courier, serif;
+    font-weight: 400;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+a, a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+ul, li {
+    list-style: none;
+}
+
+/*********************************************
+
+    NAV
+
+*********************************************/
+
+#nav {
+/*    border: 1px solid pink;*/
+    position: fixed;
+    top: 36px;
+    left: 48px;
+    font-family: "Atlas Grotesk", sans-serif;
+    line-height: 2;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/*********************************************
+
+    BACKGROUND
+
+*********************************************/
+
+#bg_image {
+/*    border: 1px solid red;*/
+    height: 100%;
+    width: 100%;
+    position: relative;
+/*    position: fixed;
+    z-index: 1;*/
+    top: 0;
+    left: 0;
+}
+
+#bg_image > div {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#wrapper {
+/*    border: 1px solid red;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.home_col {
+/*    border: 1px solid blue;*/
+    margin: 24px 5%;
+    width: 40%;
+    display: inline-block;
+    vertical-align: top;
+/*    font-family: "Century Std MT", arial;*/
+}
+
+#right {
+    margin: 24px 0;
+/*    margin-right: 0;*/
+}
+
+.home_col div, .home_col p {
+    margin-bottom: 16px;
+}
+
+#social_media li {
+/*    border: 1px solid orange;*/
+    display: inline-block;
+    margin-right: 16px;
+    transform: translateY(4px);
+    width: 30px;
+    height: 30px;
+}
+
+#social_media li img {
+    width: 100%;
+    height: 100%;
+}
+
+#newsletter {
+    display: inline-block;
+    padding: 2px;
+    border-bottom: 1px solid white;
+}
+
+.concert {
+    margin-bottom: 16px;
+}
+
+.concert_date {
+    letter-spacing: 0.05em;
+}
+
+
+
