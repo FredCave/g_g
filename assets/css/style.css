@@ -57,12 +57,12 @@ html, body {
     color: white;
     font-family: courier, serif;
     font-weight: 400;
-    font-size: 1.1em;
+    font-size: 1.05em;
     line-height: 1.6;
 }
 
 a, a:visited {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
@@ -79,11 +79,19 @@ ul, li {
 #nav {
 /*    border: 1px solid pink;*/
     position: fixed;
+    z-index: 99;
     top: 36px;
     left: 48px;
     font-family: "Atlas Grotesk", sans-serif;
+    font-family: "Franklin Gothic", sans-serif;
+    font-family: "Suisse Works", times, serif;
+    letter-spacing: 0.05em;
     line-height: 2;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+#nav a, #nav a:visited {
+    color: white;
 }
 
 /*********************************************
@@ -96,9 +104,7 @@ ul, li {
 /*    border: 1px solid red;*/
     height: 100%;
     width: 100%;
-    position: relative;
-/*    position: fixed;
-    z-index: 1;*/
+    position: fixed;
     top: 0;
     left: 0;
 }
@@ -114,8 +120,96 @@ ul, li {
     background-repeat: no-repeat;
 }
 
-#wrapper {
-/*    border: 1px solid red;*/
+/*********************************************
+
+    WIDGETS
+
+*********************************************/
+
+#widget_wrapper {
+/*    border: 1px solid orange;*/
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    top: 36px;
+    font-family: "Suisse Works", times, serif;
+    color: black;
+    padding-bottom: 120px;
+}
+
+.widget {
+/*    border: 1px solid pink;*/
+    background-color: #ddd;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 45%;
+    min-height: 48px;
+    margin: 0 2% 20px 2%;
+    padding-bottom: 16px;   
+}
+
+.widget_content {
+/*    border: 1px solid blue;*/
+    width: 95%;
+    margin: 12px 2.5% 24px 3%;
+}
+
+.widget_content img {
+    width: 67%;
+    margin: 16px 0;
+}
+
+.info_wrapper {
+/*    border: 1px solid blue;*/
+    position: relative;  
+/*    margin-top: 8px; */
+}
+
+.image_credit {
+/*    border: 1px solid blue;*/
+    position: absolute;
+    top: 3px;
+    width: 25%;
+    font-family: "Franklin Gothic", sans-serif;
+    font-size: 0.6em;
+}
+
+.widget_content h1 {
+    font-family: "Franklin Gothic", sans-serif;
+    text-transform: uppercase;
+    margin: 0 0 12px 30%;  
+}
+
+.text_block {
+    width: 50%;
+    margin-left: 25%;
+}
+
+.text_block p {
+    margin-bottom: 12px;
+}
+
+.news_widget {
+    width: 94%;
+    display: block;
+}
+
+.close {
+/*    border: 1px solid orange;*/
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    background-image: url("../img/close.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/*#wrapper {
+/*    border: 1px solid red;
     position: absolute;
     top: 0;
     left: 0;
@@ -123,17 +217,17 @@ ul, li {
 }
 
 .home_col {
-/*    border: 1px solid blue;*/
+/*    border: 1px solid blue;
     margin: 24px 5%;
     width: 40%;
     display: inline-block;
     vertical-align: top;
-/*    font-family: "Century Std MT", arial;*/
+/*    font-family: "Century Std MT", arial;
 }
 
 #right {
     margin: 24px 0;
-/*    margin-right: 0;*/
+/*    margin-right: 0;
 }
 
 .home_col div, .home_col p {
@@ -141,7 +235,7 @@ ul, li {
 }
 
 #social_media li {
-/*    border: 1px solid orange;*/
+/*    border: 1px solid orange;
     display: inline-block;
     margin-right: 16px;
     transform: translateY(4px);
@@ -166,7 +260,7 @@ ul, li {
 
 .concert_date {
     letter-spacing: 0.05em;
-}
+}*/
 
 
 
