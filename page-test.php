@@ -3,15 +3,15 @@
 	<div id="bg_image"></div>
 
 	<ul id="nav">
-		<li><a href="#news">News</a></li>
-		<li><a href="#biography">Biography</a></li>
-		<li><a href="#projects">Projects</a>
+		<li><a href="#_news">News</a></li>
+		<li><a href="#_biography">Biography</a></li>
+		<li><a href="#_projects">Projects</a>
 			<ul></ul>
 		</li>
-		<li><a href="#concerts">Concerts</a></li>
-		<li><a href="#discography">Discography</a></li>
-		<li><a href="#links">Links</a></li>
-		<li><a href="#contact">Contact</a></li>
+		<li><a href="#_concerts">Concerts</a></li>
+		<li><a href="#_discography">Discography</a></li>
+		<li><a href="#_links">Links</a></li>
+		<li><a href="#_contact">Contact</a></li>
 	</ul>
 
 	<div id="widget_wrapper">

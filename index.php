@@ -1,11 +1,14 @@
 <?php get_header(); ?>
-	
-	<div id="holding">
 
-		<p class="loading">Site en construction</p>
+	<div id="bg_image"></div>
 
-		<p><a href="http://letonvertical.blogspot.fr/">Blog</a></p>
+	<!-- NAV -->
+	<?php include( "includes/nav.php" ); ?>
 
-	</div>
+	<!-- SIDEBAR -->
+	<div id="sidebar"></div>	
+
+	<!-- MAIN COLUMN -->
+	<div id="widget_wrapper"></div>
 
 <?php get_footer(); ?>

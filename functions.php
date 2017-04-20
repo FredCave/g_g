@@ -98,38 +98,115 @@ function create_post_types() {
 add_theme_support( 'post-thumbnails' );
 add_image_size( 'extralarge', 1200, 1200 );
 
-function image_object( $image ) {
-    if( !empty($image) ): 
-        $width = $image['sizes'][ 'thumbnail-width' ];
-        $height = $image['sizes'][ 'thumbnail-height' ];
-        $thumb = $image['sizes'][ "thumbnail" ]; // 300
-        $medium = $image['sizes'][ "medium" ]; // 600
-        $large = $image['sizes'][ "large" ]; // 900
-        $extralarge = $image['sizes'][ "extralarge" ]; // 1200
-        $id = $image["id"];
-        // DEFAULT IS FULL WIDTH
-        if ( $height / $width >= 0.5 && $height / $width < 1 ) {
-            $class = "two-thirds";
-        } else if ( $height / $width >= 1 ) {
-            $class = "one-third";
-            // PORTRAIT MODE
-            $thumb = $image['sizes'][ "medium" ];
-            $medium = $image['sizes'][ "large" ];
-            $large = $image['sizes'][ "extralarge" ]; 
-        } else {
-            $class = "full-width"; 
-        }
-        echo "<img class='" . $class . " ' 
-            alt='Le Ton Vertical' 
-            width='" . $width . "' 
-            height='" . $height . "' 
-            data-thm='" . $thumb . "' 
-            data-med='" . $medium . "' 
-            data-lrg='" . $large . "' 
-            data-xlg='" . $extralarge . "' 
-            src=' " . $thumb . "' />";
-    endif;
+// function image_object( $image ) {
+//     if( !empty($image) ): 
+//         $width = $image['sizes'][ 'thumbnail-width' ];
+//         $height = $image['sizes'][ 'thumbnail-height' ];
+//         $thumb = $image['sizes'][ "thumbnail" ]; // 300
+//         $medium = $image['sizes'][ "medium" ]; // 600
+//         $large = $image['sizes'][ "large" ]; // 900
+//         $extralarge = $image['sizes'][ "extralarge" ]; // 1200
+//         $id = $image["id"];
+//         // DEFAULT IS FULL WIDTH
+//         if ( $height / $width >= 0.5 && $height / $width < 1 ) {
+//             $class = "two-thirds";
+//         } else if ( $height / $width >= 1 ) {
+//             $class = "one-third";
+//             // PORTRAIT MODE
+//             $thumb = $image['sizes'][ "medium" ];
+//             $medium = $image['sizes'][ "large" ];
+//             $large = $image['sizes'][ "extralarge" ]; 
+//         } else {
+//             $class = "full-width"; 
+//         }
+//         echo "<img class='" . $class . " ' 
+//             alt='Le Ton Vertical' 
+//             width='" . $width . "' 
+//             height='" . $height . "' 
+//             data-thm='" . $thumb . "' 
+//             data-med='" . $medium . "' 
+//             data-lrg='" . $large . "' 
+//             data-xlg='" . $extralarge . "' 
+//             src=' " . $thumb . "' />";
+//     endif;
+// }
+
+// REST API ENDPOINTS
+
+function date_cmp ($a, $b) {
+    return strcmp( $a["date"], $b["date"] );
 }
+
+function upcoming_concerts () {
+    $agenda_query = new WP_Query( "post_type=concerts" );
+    $data = array();
+    // LOOP THROUGH POSTS
+    if ( $agenda_query->have_posts() ) :
+        $i = 0;
+        while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
+            // FILTER USING ISPAST FILTER
+            if ( !isPast( get_field("concert_date") ) ) {
+                $data[] = array(
+                    'title' => get_the_title(),
+                    'date' => get_field("concert_date"),
+                    'link' => get_field("concert_venue_link"),
+                    'group' => get_field("concert_group")
+                );
+            }
+            $i++;
+        endwhile;
+        wp_reset_postdata();
+    endif;
+
+    // SORT BY DATE
+    usort( $data, "date_cmp" );
+
+    // RETURN DATA
+    if ( empty( $data ) ) {
+        return null;
+    }    
+    return $data;
+}
+
+function previous_concerts () {
+    $agenda_query = new WP_Query( "post_type=concerts" );
+    $data = array();
+    // LOOP THROUGH POSTS
+    if ( $agenda_query->have_posts() ) :
+        $i = 0;
+        while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
+            // FILTER USING ISPAST FILTER
+            if ( isPast( get_field("concert_date") ) ) {
+                $data[] = array(
+                    'title' => get_the_title(),
+                    'date' => get_field("concert_date"),
+                    'link' => get_field("concert_venue_link"),
+                    'group' => get_field("concert_group")
+                );
+            }
+        endwhile;
+        wp_reset_postdata();
+    endif;
+    // RETURN DATA
+    if ( empty( $data ) ) {
+        return null;
+    }    
+    return $data;
+}
+
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'custom/v1', '/upcoming/', array(
+        'methods' => 'GET',
+        'callback' => 'upcoming_concerts',
+    ) );
+    register_rest_route( 'custom/v1', '/previous/', array(
+        'methods' => 'GET',
+        'callback' => 'previous_concerts',
+    ) );
+} );
+
+
+
 
 // AGENDA / ARCHIVE
 
@@ -142,10 +219,11 @@ function isPast ( $date ) {
     $today_month = $today[1];
     $today_year = $today[2];
     // INPUT DATE
+    // FORMAT: 2017-03-31 19:00:00
     $show = explode( "–", $date );
-    $show_day = $show[0];
+    $show_year = $show[0];
     $show_month = $show[1];
-    $show_year = $show[2];
+    $show_day = $show[2];
 
     $past = false;
     // IF YEAR IS IN PAST
@@ -166,58 +244,44 @@ function isPast ( $date ) {
     return $past;
 }
 
-function get_future_concerts () {
-    $agenda_query = new WP_Query( "post_type=concerts" );
-    if ( $agenda_query->have_posts() ) :
-        echo "<ul>";
-        while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
-            $date = get_field("concert_date");
-            ?>
-            <li>
-                <?php // IF IN FUTURE
-                if ( !isPast( $date ) ) { ?>
-                    <p><?php the_field("concert_date"); ?></p>
-                    <p>
-                        <?php if ( get_field("concert_link") ) { ?>
-                            <a href="<?php the_field('concert_link'); ?>"><?php the_title(); ?></a>
-                        <?php } else {
-                            the_title();
-                        } ?>
-                    </p>
-                <?php } ?>
-            </li>
-            <?php
-        endwhile;
-        echo "</ul>";
-        wp_reset_postdata();
-    endif;
-}
+// function get_future_concerts () {
+//     $agenda_query = new WP_Query( "post_type=concerts" );
+//     if ( $agenda_query->have_posts() ) :
+//         $data = array();
+//         while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
+//             if ( !isPast( get_field("concert_date") ) ) {
+//                 $data[] = json_decode( json_encode( $post ), true );
+//             }
+//         endwhile;
+//         wp_reset_postdata();
+//         return $data;
+//     endif;
+// }
 
-function get_past_concerts () {
-    $agenda_query = new WP_Query( "post_type=concerts" );
-    if ( $agenda_query->have_posts() ) :
-        echo "<ul class=''>";
-        while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
-            $date = get_field("concert_date");
-            ?>
-            <li>
-                <?php // IF IN PAST
-                if ( isPast( $date ) ) { ?>
-                    <p><?php the_field("concert_date"); ?></p>
-                    <p>
-                        <?php if ( get_field("concert_link") ) { ?>
-                            <a href="<?php the_field('concert_link'); ?>"><?php the_title(); ?></a>
-                        <?php } else {
-                            the_title();
-                        } ?>
-                    </p>
-                <?php } ?>
-            </li>
-            <?php
-        endwhile;
-        echo "</ul>";
-        wp_reset_postdata();
-    endif;
+// function get_past_concerts () {
+//     $agenda_query = new WP_Query( "post_type=concerts" );
+//     if ( $agenda_query->have_posts() ) :
+//         $data = array();
+//         while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
+//             if ( isPast( get_field("concert_date") ) ) {
+//                 $data[] = json_decode( json_encode( $post ), true );
+//             }
+//         endwhile;
+//         wp_reset_postdata();
+//         return $data;
+//     endif;
+// }
+
+// GET PROJECTS FOR MENU
+
+function get_projects () {
+    $projects_query = new WP_Query( "post_type=projects" ); 
+    if ( $projects_query->have_posts() ) :
+        while ( $projects_query->have_posts() ) : $projects_query->the_post(); ?>
+            <li><a href="#_projects/<?php the_ID(); ?>"><?php the_title(); ?></a></li>
+        <?php
+        endwhile;  
+    endif;    
 }
 
 ?>
