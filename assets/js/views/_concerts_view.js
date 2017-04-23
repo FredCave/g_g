@@ -49,7 +49,7 @@ app.ConcertsView = app.Widget.extend({
 		posts.forEach( function ( post ) { 
 
 			// GET DATE
-	        var concert_date = moment(post.attributes.date),
+	        var concert_date = moment( post.attributes.date, "YYYY/MM/DD HH:mm:ss" ),
 	            formatted_date;
 
 	    	// IF TIME IS OTHER THAN DEFAULT
@@ -96,19 +96,62 @@ app.ConcertsView = app.Widget.extend({
 
 		this.posts = {"posts": this.filteredPosts };
 
-		this.upcomingTemplate = _.template( $('#concerts_sub_template').html() );
+		this.subTemplate = _.template( $('#concerts_sub_template').html() );
 
-		this.target.append( this.upcomingTemplate( this.posts ) );
+		// IF PREVIOUS: ADD FILTERING
+		if ( section === "previous" ) {
+
+			this.renderPrevious( this.posts );
+
+		} else {
+
+			this.target.append( this.subTemplate( this.posts ) );			
+
+		}
 
 		return this;
 
 	},
 
-	renderPrevious: function () {
+	renderPrevious: function ( posts ) {
 
 		console.log("ConcertsView.renderPrevious");
 
-		this.previousTemplate = _.template( $('#concerts_template').html() );
+		console.log( 120, posts );
+
+		// GET GROUPS + YEARS
+		var groups = [],
+			years = [],
+			year;
+
+		if ( posts.length ) {
+
+			_.each( posts, function( post ) {
+				// IF NOT YET IN ARRAY
+				if ( !_.contains( groups, post[0].attributes.group[0] ) ) {
+					groups.push( post[0].attributes.group[0] );
+				}
+				year = post[0].attributes.date.split("–")[2].split(",")[0];
+				if ( !_.contains( years, year ) ) {
+					years.push( year );
+				}			
+			});
+
+		}
+
+		console.log( 129, groups, years );
+
+		this.groups = groups;
+		this.years = years;
+
+		// ADD FILTER
+		this.filterTemplate = _.template( $('#concerts_filter_template').html() );
+
+		this.target.append( this.filterTemplate() );
+
+		this.previousTemplate = _.template( $('#concerts_sub_template').html() );
+
+		this.target.append( this.subTemplate( this.posts ) );
 
 
 	}

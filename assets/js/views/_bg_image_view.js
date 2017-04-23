@@ -26,6 +26,7 @@ app.BgImageView = Backbone.View.extend({
 
 		$(window).on( "resize", _.throttle( function (){
 			// RECALCULATE IMAGE
+			console.log( 29, "BG image resize" );
 			self.render( self.model.attributes );
 		}, 500 ) );
 

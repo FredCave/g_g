@@ -93,8 +93,8 @@
             "key": "field_58d3e72f36e28",
             "label": "Soundcloud Playlist",
             "name": "home_playlist",
-            "type": "scplaylist",
-            "instructions": "",
+            "type": "textarea",
+            "instructions": "Add the embed code that begins with \"<iframe...\" and ends with \"<\/iframe>\"",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -102,8 +102,13 @@
                 "class": "",
                 "id": ""
             },
-            "button_label": "Browse Playlist!",
-            "return_format": "array"
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": "wpautop",
+            "readonly": 0,
+            "disabled": 0
         }
     ],
     "location": [
@@ -139,5 +144,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1492612702
+    "modified": 1492896073
 }

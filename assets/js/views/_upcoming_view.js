@@ -30,7 +30,7 @@ app.UpcomingView = app.Widget.extend({
 		posts.forEach( function ( post ) { 
 
 			// GET DATE
-	        var concert_date = moment(post.attributes.date),
+	        var concert_date = moment( post.attributes.date, "YYYY/MM/DD HH:mm:ss" ),
 	            formatted_date;
 
 	    	// IF TIME IS OTHER THAN DEFAULT

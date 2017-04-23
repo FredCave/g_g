@@ -50,9 +50,20 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 *********************************************/
 
 @font-face {
-    font-family: 'ncs';
-    src: url('../fonts/ncs_roman-webfont.woff2') format('woff2'),
-         url('../fonts/ncs_roman-webfont.woff') format('woff');
+    font-family: 'Suisse';
+    src: url('assets/fonts/suisseworks-book-webfont.eot');
+    src: url('assets/fonts/suisseworks-book-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/suisseworks-book-webfont.woff2') format('woff2'),
+         url('assets/fonts/suisseworks-book-webfont.woff') format('woff'),
+         url('assets/fonts/suisseworks-book-webfont.svg#suisse_worksbook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Frank';
+    src: url('assets/fonts/franklingothic-book-webfont.woff2') format('woff2'),
+         url('assets/fonts/franklingothic-book-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -69,22 +80,28 @@ html, body {
     overflow-x: hidden;
     background-color: #000;
     color: white;
-    font-family: courier, serif;
+    font-family: "Suisse", "Suisse Works", times, serif;
     font-weight: 400;
     font-size: 1em;
     line-height: 1.6;
 }
 
 a, a:visited {
-    font-family: "Franklin Gothic", sans-serif;   
-    font-size: 1.05em;  
+    font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif;  
+    font-size: 1.1em;  
     color: black;
     text-decoration: none;
+/*    border-bottom: 1px solid black;*/
+    padding: 2px 0;
+}
+
+a:hover {
+    border-bottom: 1px solid black;
 }
 
 .link {
     display: inline-block;
-    border-bottom: 1px solid black;  
+/*    border-bottom: 1px solid black; */ 
 }
 
 ul, li {
@@ -92,7 +109,8 @@ ul, li {
 }
 
 h1, h2, h3, h4 {
-    font-family: "Franklin Gothic", sans-serif;    
+    font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif; 
+    font-size: 1.1em;     
 }
 
 h1, h2 {
@@ -107,7 +125,11 @@ h1 {
 }
 
 h4 { 
-    font-size: 0.6em;
+    font-size: 0.7em;
+}
+
+.en {
+    display: none;
 }
 
 /*********************************************
@@ -122,7 +144,7 @@ h4 {
     z-index: 99;
     top: 36px;
     left: 48px;
-    font-family: "Franklin Gothic", helvetica, arial sans-serif;
+/*    font-family: "Frank", courier, "Franklin Gothic", helvetica, arial sans-serif;*/
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 2;
@@ -141,12 +163,12 @@ h4 {
 }
 
 #nav a, #nav a:visited {
-/*    color: white;*/
+    border-bottom: 0px;
 }
 
 #projects_hidden {
 /*    margin-left: 48px;*/
-    font-family: "Franklin Gothic", sans-serif;
+    font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif;   
     display: none;
 /*    text-align: center;*/
     text-transform: capitalize;
@@ -155,6 +177,21 @@ h4 {
 #projects_hidden li {
     margin: 0 16px 0 0;
 }
+
+#lang_selec {
+    float: right;
+    padding-right: 24px;
+}
+
+#lang_selec a {
+    color: gray;
+}
+
+#lang_selec .selected {
+    color: black;
+    cursor: text;
+}
+
 
 /*********************************************
 
@@ -202,30 +239,14 @@ h4 {
 section {
 /*    background-color: rgba(255,255,255,0.4);*/
     width: 100%;
-    display: inline-block;
-}
-
-#sidebar {
-/*    border: 1px solid red;*/
-    position: absolute;
-    width: calc( 33% - 50px );
-    min-height: 600px;
-    top: 64px;
-    right: 36px;
-}
-
-#widget_wrapper {
-/*    border: 1px solid orange;*/
-    position: absolute;
-    width: calc( 66% - 50px );
-    left: 36px;
-    top: 64px;
-    padding: 0px 0 120px 0;
+    display: inline-block; 
+    opacity: 1;
+    transition: opacity 1s, height 1s;
 }
 
 .widget {
 /*    border: 1px solid pink;*/
-    font-family: "Suisse Works", times, serif;
+/*    font-family: "Suisse", "Suisse Works", times, serif;*/
     color: black;
     background-color: #eee;
     display: inline-block;
@@ -236,14 +257,8 @@ section {
     margin: 0 0 24px 0px;
     padding-bottom: 16px;  
     box-shadow: 2px 2px 5px rgba(0,0,0,0.8); 
+    overflow: hidden;
     display: none;
-}
-
-#upcoming .widget, 
-#soundcloud .widget, 
-#links .widget, 
-#contact .widget {
-/*    margin: 0;*/
 }
 
 .widget_content {
@@ -255,6 +270,22 @@ section {
 .widget_content img {
     width: 67%;
     margin-bottom: 16px;
+}
+
+.widget_content .two-thirds {
+    width: 67%;
+}
+
+.widget_content .one-half {
+    width: 50%;
+}
+
+.widget_content .one-third {
+    width: 33%;
+}
+
+.widget_content .one-quarter {
+    width: 25%;
 }
 
 .close {
@@ -270,71 +301,86 @@ section {
     background-repeat: no-repeat;
 }
 
-.title_wrapper {
-    width: 100%;
-    text-align: center;
+/*********************************************
+
+    SIDEBAR
+
+*********************************************/
+
+#sidebar {
+/*    border: 1px solid red;*/
+    position: absolute;
+    width: calc( 33% - 50px );
+    min-height: 600px;
+    top: 64px;
+    right: 36px;
 }
 
-.info_wrapper {
-/*    border: 1px solid blue;*/
-    position: relative;  
-/*    margin-top: 8px; */
+#contact a, #upcoming a {
+    border-bottom: 0;
 }
 
-.image_credit {
-    width: 25%;
-    margin-bottom: 12px;
-    position: absolute;  
-    top: 3px; 
+#contact a:hover, #upcoming a:hover {
+    border-bottom: 1px solid black;
 }
 
-/*#news .image_credit {
-    position: absolute;  
-    top: 3px;  
+/*#upcoming .link a {
+    border-bottom: 1px solid black;
 }*/
 
-.news_title {
-    margin: 0 0 12px 30%;   
-}
-
-.text_block {
-    width: 65%;
-    margin-left: 16.7%;
-}
-
-.text_block p {
+.upcoming_concert {
     margin-bottom: 12px;
+    font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif; 
 }
 
 #soundcloud iframe {
     margin-top: 44px;
 }
 
-.upcoming_concert {
+.soundcloud_wrapper, #soundcloud {
+/*    border: 1px solid purple;*/
+}
+
+#widget_wrapper {
+/*    border: 1px solid orange;*/
+    position: absolute;
+    width: calc( 66% - 50px );
+    left: 36px;
+    top: 64px;
+    padding: 0px 0 120px 0;
+}
+
+/*********************************************
+
+    MAIN COLUMN
+
+*********************************************/
+
+.text_block {
+    width: 65%;
+    margin-left: 16.7%;
+    margin-bottom: 24px;
+}
+
+.text_block a {
+    border-bottom: 1px solid black;
+}
+
+.text_block p {
     margin-bottom: 12px;
 }
 
-.concert {
-    margin-bottom: 12px;
-}
-
-.concert > div {
-/*    border: 1px solid blue;*/
+.text_block img {
+/*    border: 1px solid orange;*/
+    width: 25%;
+    height: auto;
+    transform: translateX(-50%);
     display: inline-block;
-    width: 50%;
-    vertical-align: top;
-}
-
-.concert > div:last-child {
-    width: 45%;
-}
-
-.concert_group {
-    text-transform: uppercase;
 }
 
 .album {
-/*    border: 1px solid red;*/
+/*    border-bottom: 1px solid black;
+    padding-bottom: 24px;*/
     margin-bottom: 24px;
 }
 
@@ -361,8 +407,98 @@ section {
 }
 
 .album .album_info {
-    font-family: "Franklin Gothic", sans-serif;
+    font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif;    
     font-size: 0.8em;
+}
+
+.album_image:hover {
+    border: 0;
+}
+
+.album_buy {
+    display: inline-block;
+    margin: 8px 0 12px 0;
+    padding: 0;
+    border-bottom: 1px solid black;
+}
+
+.album_logos {
+    margin-top: 12px;
+}
+
+.album_logos li {
+/*    border: 1px solid green;*/
+    display: inline-block;
+    margin: 12px 12px 0 0 ;
+    width: 64px;
+    vertical-align: middle;
+}
+
+.title_wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.info_wrapper {
+/*    border: 1px solid blue;*/
+    position: relative;  
+/*    margin-top: 8px; */
+}
+
+.image_credit {
+    width: 25%;
+    margin-bottom: 12px;
+    position: absolute;  
+    top: 3px; 
+}
+
+/*#news .image_credit {
+    position: absolute;  
+    top: 3px;  
+}*/
+
+.indent_title_wrapper {
+    margin: 0 0 12px 30%;   
+}
+
+.indent_title {
+    display: inline;
+}
+
+.concert {
+    margin-bottom: 12px;
+}
+
+.concert > div {
+/*    border: 1px solid blue;*/
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+}
+
+.concert > div:last-child {
+    width: 45%;
+}
+
+.concert_group {
+    text-transform: uppercase;
+}
+
+.concerts_filter {
+/*    border: 1px solid red;*/
+    margin-bottom: 12px;
+    text-align: center; 
+    display: none;
+}
+
+.concerts_filter li {
+    border-bottom: 1px solid black;
+    padding: 2px;
+    display: inline-block;
+}
+
+.no-concerts {
+    text-align: center;
 }
 
 #links ul {
@@ -373,6 +509,11 @@ section {
     display: inline-block;
     width: 30%;
     margin-right: 3%;
+}
+
+.project_album > a {
+    padding: 0;
+    border: 0;
 }
 
 .project_album img {

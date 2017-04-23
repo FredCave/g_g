@@ -36,7 +36,13 @@ app.ProjectsView = app.Widget.extend({
 			self.filteredConcerts = self.upcomingConcerts.filter( function(item) { 
 				// GET GROUP FROM ACF RELATIONSHIP OBJECT
 				var group = item.get("group")[0];
-				return group.ID == self.id;
+
+				if ( group ) {
+					return group.ID == self.id;	
+				} else {
+					return null;
+				}
+				
 			});
 
 			if ( self.filteredConcerts.length ) {
@@ -80,7 +86,7 @@ app.ProjectsView = app.Widget.extend({
 		posts.forEach( function ( post ) { 
 
 			// GET DATE
-	        var concert_date = moment(post.attributes.date),
+	        var concert_date = moment( post.attributes.date, "YYYY/MM/DD HH:mm:ss" ),
 	            formatted_date;
 
 	    	// IF TIME IS OTHER THAN DEFAULT
@@ -98,9 +104,21 @@ app.ProjectsView = app.Widget.extend({
 
 	},
 
+	navTo: function ( section ) {
+
+        console.log( "Router.navTo", section );
+    
+        $('html, body').animate({
+            scrollTop: $("#" + section).offset().top - ( $("#nav").outerHeight() + 40 )
+        }, 1000 );          
+
+    },
+
 	render: function () {
 
 		// console.log("ProjectsView.render");
+
+		var self = this;
 
 		this.$el.append( this.template( this.model ) );
 
@@ -110,6 +128,11 @@ app.ProjectsView = app.Widget.extend({
 		this.loadConcerts();
 		this.loadAlbums();
 
+		// UNDERSCORE DEFER
+		setTimeout( function(){
+			self.navTo("project-" + self.id);
+		}, 500 );
+
 		return this;
 
 	},
@@ -118,10 +141,10 @@ app.ProjectsView = app.Widget.extend({
 
 		console.log("ProjectsView.renderConcerts");
 
-		this.target = $("[data-id=" + this.id + "]").find(".project_concerts");
+		this.target = $("#project-" + this.id).find(".project_concerts");
 
 		// APPEND TITLE
-		this.target.append("<h1>Upcoming Concerts</h1>");
+		this.target.append("<div class='title_wrapper'><h1 class='fr'>Concerts à venir</h1><h1 class='en'>Upcoming Concerts</h1></div>");
 
 		this.filteredConcertPosts = {"posts": this.filterDates( this.filteredConcerts ) };
 
@@ -137,10 +160,10 @@ app.ProjectsView = app.Widget.extend({
 
 		console.log("ProjectsView.renderAlbums");
 
-		this.target = $("[data-id=" + this.id + "]").find(".project_discography");
+		this.target = $("#project-" + this.id).find(".project_discography");
 
 		// APPEND TITLE
-		this.target.append("<h1>Discography</h1>");
+		this.target.append("<div class='title_wrapper'><h1>Albums</h1></div>");
 
 		this.filteredAlbumPosts = {"posts": this.filteredAlbums };
 

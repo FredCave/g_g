@@ -12,11 +12,27 @@ app.AppView = Backbone.View.extend({
 
 		this.loadMainColumn();
 
+		this.bindEvents();
+
+	},
+
+	bindEvents: function () {
+
+		console.log("AppView.bindEvents");
+
+		$("html,body").on( "scroll", function(){
+			$("html,body").stop();
+		});
+
 	},
 
 	loadSidebar: function () {
 
 		console.log("AppView.loadSidebar");
+
+		// CONTACT
+		$("#sidebar").append("<section id='contact'></section>");
+		new app.ContactView();
 
 		// LOAD UPCOMING CONCERTS
 		$("#sidebar").append("<section id='upcoming'></section>");
@@ -24,7 +40,7 @@ app.AppView = Backbone.View.extend({
 
 		// SOUNDCLOUD 
 		$("#sidebar").append("<section id='soundcloud'></section>");
-		// new app.SoundcloudView();
+		new app.SoundcloudView();
 
 	},
 
@@ -36,50 +52,5 @@ app.AppView = Backbone.View.extend({
 		new app.NewsView();
 
 	}
-
-	// initialWidgetLoad: function () {
-
-	// 	// console.log("AppView.initialWidgetLoad");
-
-	// 	var self = this;
-
-	// 	// NEWS 
-	// 	this.$el.append("<section id='news'></section>");
-	// 		// TO DO: MAX 3 POSTS
-	// 	this.newsView = new app.NewsView();
-
-	// },
-
-	// render: function () {
-
-	// 	console.log("AppView.render");
-
-	// },
-
-	// renderWidgets: function ( elems ) {
-
-	// 	console.log("AppView.renderWidgets");
-
-	// 	// var self = this;
-	// 	// // LOOP THROUGH ELEMS
-	// 	// elems.forEach( function ( model ) {
-			
-	// 	// 	// PASS TO RENDER WIDGET
-	// 	// 	var newsItemView = new app.NewsItemView({model:model});
-	// 	// 	self.$el.append( newsItemView.render().$el );	
-
-	// 	// });
-
-	// }, 
-
-	// renderWidget: function ( elem ) {
-
-	// 	console.log("AppView.renderWidget");
-
-	// 	// this.$el.append( elem );
-
-	// 	// return this;
-
-	// }
 
 });

@@ -18,7 +18,7 @@ app.MainRouter = Backbone.Router.extend({
 
         "_links" : "showLinks",
 
-        "_contact" : "showContact",     
+        // "_contact" : "showContact",     
 
         "*other"    : "showHome"
 
@@ -34,8 +34,10 @@ app.MainRouter = Backbone.Router.extend({
 
     navTo: function ( section ) {
 
-        // console.log("Router.navTo", section);
-        
+        console.log( "Router.navTo", section );
+    
+        // console.log( 39, $("#" + section), $("#sidebar") );
+
         $('html, body').animate({
             scrollTop: $("#" + section).offset().top - ( $("#nav").outerHeight() + 40 )
         }, 1000 );          
@@ -77,7 +79,12 @@ app.MainRouter = Backbone.Router.extend({
 
         if ( !this.exists( "biography" ) ) {
             $("#widget_wrapper").append("<section id='biography'></section>");
-            new app.BiographyView();            
+            new app.BiographyView(); 
+
+            // $(document).on("NewsView.newsLoaded()", function(){
+            //     console.log("News loaded.");
+            // });
+
         }
         this.navTo("biography");
 
@@ -87,18 +94,19 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("showProjectItem", id);
 
-        // CHECK IF WRAPPER EXISTS
+        // IF WRAPPER DOES NOT EXIST
         if ( !this.exists( "projects" ) ) {
             $("#widget_wrapper").append("<section id='projects'></section>");
             new app.ProjectsView({id:id});
         } else {
-            // CHECK IF INDIVIDUAL ITEMS EXIST
-            if ( !$("[data-id='" + id + "']").length ) {
-                // PROJECT DOES NOT EXIST
+            // IF INDIVIDUAL ITEM DOES NOT EXIST
+            if ( !$("#project-" + id ).length ) {
                 new app.ProjectsView({id:id}); 
+            // NAVIGATE TO
+            } else {
+                this.navTo("project-" + id);
             }
         }
-        this.navTo("projects");
 
     },    
 
@@ -136,18 +144,18 @@ app.MainRouter = Backbone.Router.extend({
         }
         this.navTo("links");
 
-    },
-    
-    showContact: function () {
-
-    	console.log("showContact");
-
-        if ( !this.exists( "contact" ) ) {
-            $("#widget_wrapper").append("<section id='contact'></section>");
-            new app.ContactView();
-        }
-        this.navTo("contact");
-
     }
+    
+    // showContact: function () {
+
+    // 	console.log("showContact");
+
+    //     if ( !this.exists( "contact" ) ) {
+    //         $("#widget_wrapper").append("<section id='contact'></section>");
+    //         new app.ContactView();
+    //     }
+    //     this.navTo("contact");
+
+    // }
 
 });

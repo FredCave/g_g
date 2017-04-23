@@ -66,6 +66,24 @@
             "media_upload": 1
         },
         {
+            "key": "field_58f73fa84f130",
+            "label": "Biography Text English",
+            "name": "biography_text_en",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1
+        },
+        {
             "key": "field_58c5c35a59490",
             "label": "Link to Images",
             "name": "biography_link_images",
@@ -160,5 +178,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1490557983
+    "modified": 1492966161
 }

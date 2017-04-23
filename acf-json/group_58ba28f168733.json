@@ -115,9 +115,9 @@
             "disabled": 0
         },
         {
-            "key": "field_58ba29a93af44",
-            "label": "Musicians",
-            "name": "album_musicians",
+            "key": "field_58ba29ba3af45",
+            "label": "Information",
+            "name": "album_other_info",
             "type": "wysiwyg",
             "instructions": "",
             "required": 0,
@@ -133,9 +133,9 @@
             "media_upload": 1
         },
         {
-            "key": "field_58ba29ba3af45",
-            "label": "Other Information",
-            "name": "album_other_info",
+            "key": "field_58f7418590548",
+            "label": "Information English",
+            "name": "album_other_info_en",
             "type": "wysiwyg",
             "instructions": "",
             "required": 0,
@@ -236,12 +236,12 @@
         },
         {
             "key": "field_58ba2b333af4a",
-            "label": "Prizes",
+            "label": "Logos",
             "name": "album_prizes",
             "type": "repeater",
             "instructions": "",
-            "required": "",
-            "conditional_logic": "",
+            "required": 0,
+            "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -313,5 +313,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1490554378
+    "modified": 1492877603
 }

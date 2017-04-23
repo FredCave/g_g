@@ -220,7 +220,7 @@ function isPast ( $date ) {
     $today_year = $today[2];
     // INPUT DATE
     // FORMAT: 2017-03-31 19:00:00
-    $show = explode( "–", $date );
+    $show = explode( "/", $date );
     $show_year = $show[0];
     $show_month = $show[1];
     $show_day = $show[2];
@@ -243,34 +243,6 @@ function isPast ( $date ) {
     } 
     return $past;
 }
-
-// function get_future_concerts () {
-//     $agenda_query = new WP_Query( "post_type=concerts" );
-//     if ( $agenda_query->have_posts() ) :
-//         $data = array();
-//         while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
-//             if ( !isPast( get_field("concert_date") ) ) {
-//                 $data[] = json_decode( json_encode( $post ), true );
-//             }
-//         endwhile;
-//         wp_reset_postdata();
-//         return $data;
-//     endif;
-// }
-
-// function get_past_concerts () {
-//     $agenda_query = new WP_Query( "post_type=concerts" );
-//     if ( $agenda_query->have_posts() ) :
-//         $data = array();
-//         while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
-//             if ( isPast( get_field("concert_date") ) ) {
-//                 $data[] = json_decode( json_encode( $post ), true );
-//             }
-//         endwhile;
-//         wp_reset_postdata();
-//         return $data;
-//     endif;
-// }
 
 // GET PROJECTS FOR MENU
 

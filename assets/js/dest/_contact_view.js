@@ -17,7 +17,7 @@ app.ContactView = app.Widget.extend({
 		this.model = new app.ContactModel;
 		this.model.fetch().then( function(){
 
-			console.log( 20, self.model );
+			// console.log( 20, self.model );
 
 			self.render();
 
@@ -31,7 +31,7 @@ app.ContactView = app.Widget.extend({
 
 		console.log("ContactView.render");
 
-		console.log( 34, this.model );
+		// console.log( 34, this.model );
 
 		this.$el.append( this.template( this.model ) );
 
