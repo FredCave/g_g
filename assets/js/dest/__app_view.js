@@ -10,7 +10,7 @@ app.AppView = Backbone.View.extend({
 
 		this.loadSidebar();
 
-		this.loadMainColumn();
+		// this.loadMainColumn();
 
 		this.bindEvents();
 
@@ -32,7 +32,7 @@ app.AppView = Backbone.View.extend({
 
 		// CONTACT
 		$("#sidebar").append("<section id='contact'></section>");
-		new app.ContactView();
+		new app.ContactView({el:"contact"});
 
 		// LOAD UPCOMING CONCERTS
 		$("#sidebar").append("<section id='upcoming'></section>");
@@ -44,13 +44,13 @@ app.AppView = Backbone.View.extend({
 
 	},
 
-	loadMainColumn: function () {
+	// loadMainColumn: function () {
 
-		console.log("AppView.loadMainColumn");
+	// 	console.log("AppView.loadMainColumn");
 
-		$("#widget_wrapper").append("<section id='news'></section>");
-		new app.NewsView();
+	// 	// $("#widget_wrapper").append("<section id='news'></section>");
+	// 	// new app.NewsView();
 
-	}
+	// }
 
 });

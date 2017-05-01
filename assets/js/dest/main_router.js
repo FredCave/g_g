@@ -18,7 +18,7 @@ app.MainRouter = Backbone.Router.extend({
 
         "_links" : "showLinks",
 
-        // "_contact" : "showContact",     
+        "_contact" : "showContact",     
 
         "*other"    : "showHome"
 
@@ -36,8 +36,6 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log( "Router.navTo", section );
     
-        // console.log( 39, $("#" + section), $("#sidebar") );
-
         $('html, body').animate({
             scrollTop: $("#" + section).offset().top - ( $("#nav").outerHeight() + 40 )
         }, 1000 );          
@@ -47,6 +45,14 @@ app.MainRouter = Backbone.Router.extend({
     showHome: function () {
 
     	console.log("showHome");
+
+        Backbone.history.navigate('news');  
+
+        if ( !this.exists( "news" ) ) {
+            $("#widget_wrapper").append("<section id='news'></section>");
+            new app.NewsView();
+        } 
+        this.navTo("news");
 
     },
 
@@ -144,18 +150,18 @@ app.MainRouter = Backbone.Router.extend({
         }
         this.navTo("links");
 
-    }
+    },
     
-    // showContact: function () {
+    showContact: function () {
 
-    // 	console.log("showContact");
+    	console.log("showContact");
 
-    //     if ( !this.exists( "contact" ) ) {
-    //         $("#widget_wrapper").append("<section id='contact'></section>");
-    //         new app.ContactView();
-    //     }
-    //     this.navTo("contact");
+        if ( !$("#widget_wrapper").find("#contact").length ) {
+            $("#widget_wrapper").append("<section id='main_contact'></section>");
+            new app.ContactView({el:"main_contact"});
+        }
+        this.navTo("contact");
 
-    // }
+    }
 
 });

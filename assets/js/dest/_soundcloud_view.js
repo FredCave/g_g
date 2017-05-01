@@ -8,26 +8,44 @@ app.SoundcloudView = app.Widget.extend({
 
 	widgetOffset: 0,
 
-	initialize: function () {
+	initialize: function ( input ) {
 
 		// console.log("SoundcloudView.initialize");
 
 		var self = this;
 
-		// GET PLAYIST FROM HOME MODEL
-		this.model = new app.HomeModel();
-		this.model.fetch().then( function(){
+		// IF INPUT: LOAD INPUTTED MODEL
+		if ( input ) {
 
-			self.playlist = self.model.attributes.acf.home_playlist;
-			self.render();
+			this.playlist = input[0].media;
 
-			self.bindEvents();
+			this.render();
+
+			this.bindEvents();
 
 			setTimeout( function(){
 				self.calcTopOffset();	
 			}, 1000 );
-			
-		});
+
+		} else {
+
+			// GET PLAYIST FROM HOME MODEL
+			this.model = new app.HomeModel();
+			this.model.fetch().then( function(){
+
+				self.playlist = self.model.attributes.acf.home_playlist;
+
+				self.render();
+
+				self.bindEvents();
+
+				setTimeout( function(){
+					self.calcTopOffset();	
+				}, 1000 );
+				
+			});			
+
+		}
 
 	},
 
@@ -37,6 +55,7 @@ app.SoundcloudView = app.Widget.extend({
 
 		var self = this;
 
+		$(window).off("scroll");
 		$(window).on("scroll", _.throttle( function(){
 
 			self.pinCheck( $(window).scrollTop() );
@@ -60,14 +79,16 @@ app.SoundcloudView = app.Widget.extend({
 
 	pinCheck: function ( scrollTop ) {
 
-		// console.log("SoundcloudView.pinCheck", scrollTop, this.widgetTop );
+		console.log("SoundcloudView.pinCheck");
 
 		if ( this.widgetTop < scrollTop ) {
+
+			var parentW = $("#soundcloud").width();
 
 			$("#soundcloud .widget").css({
 				"position" : "fixed",
 				"top" : this.widgetOffset,
-				"width" : "calc(33% - 50px)"
+				"width" : parentW
 			});
 
 		} else {
@@ -87,6 +108,8 @@ app.SoundcloudView = app.Widget.extend({
 		// console.log("SoundcloudView.render");
 
 		this.template = _.template( $("#playlist_template").html() );
+
+		this.$el.empty();
 
 		this.$el.append( this.template( this.playlist ) );
 

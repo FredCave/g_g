@@ -117,8 +117,6 @@ app.ConcertsView = app.Widget.extend({
 
 		console.log("ConcertsView.renderPrevious");
 
-		console.log( 120, posts );
-
 		// GET GROUPS + YEARS
 		var groups = [],
 			years = [],
@@ -139,8 +137,6 @@ app.ConcertsView = app.Widget.extend({
 
 		}
 
-		console.log( 129, groups, years );
-
 		this.groups = groups;
 		this.years = years;
 
@@ -152,7 +148,6 @@ app.ConcertsView = app.Widget.extend({
 		this.previousTemplate = _.template( $('#concerts_sub_template').html() );
 
 		this.target.append( this.subTemplate( this.posts ) );
-
 
 	}
 

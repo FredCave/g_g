@@ -41,6 +41,7 @@
 		if (!window.console) console = {log: function() {}}; 
 		// SET ROOT
 		var ROOT = '<?= get_bloginfo("url"); ?>';
+		var THEME_ROOT = '<?= get_bloginfo("template_url"); ?>';
 	</script>
 
 	<?php wp_head(); ?>

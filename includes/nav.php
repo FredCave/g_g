@@ -17,10 +17,10 @@
 	<li><a href="#_links">
 		<span class="fr">Liens</span><span class="en">Links</span>
 	</a></li>
+	<li class="hide"><a href="#_contact">Contact</a></li>
 	<li id="lang_selec">
 		<a class="lang_en" href="">EN</a> / <a class="lang_fr selected" href="">FR</a>
 	</li>
-	<!-- <li><a href="#_contact">Contact</a></li> -->
 	<ul id="projects_hidden">
 		<?php get_projects(); ?>
 	</ul>

@@ -1,16 +1,8 @@
-### CLICK OUTSIDE PROJECTS TO CLOSE	
-
-### vidéo, document, noms des musiciens ne s'affichent toujours pas
+### MEDIA QUERIES
 
 ### NEWS READ MORE 
 	MAX 3 NEWS POSTS
 
-### SOCIAL MEDIA
-
-### MEDIA QUERIES
-
 ### CONCERTS – FILTER – SHOW ONLY CURRENT YEAR
 
 ### IMG SRC SIZES – GLOBAL FUNCTION
-
-### NEWSLETTER

@@ -86,6 +86,18 @@ html, body {
     line-height: 1.6;
 }
 
+    @media ( max-width: 880px ) {
+        html, body {
+            font-size: 0.95em;
+        }
+    }
+
+    @media ( max-width: 600px ) {
+        html, body {
+            font-size: 0.9em;
+        }
+    }
+
 a, a:visited {
     font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif;  
     font-size: 1.1em;  
@@ -155,6 +167,7 @@ h4 {
     width: 100%;
     padding: 6px 16px 8px 16px;
     color: black;
+    -webkit-text-size-adjust: 100%;
 }
 
 #nav li {
@@ -162,15 +175,19 @@ h4 {
     margin-right: 16px;
 }
 
+    @media ( max-width: 660px ) {
+        #nav li {
+            display: block;
+        }
+    }
+
 #nav a, #nav a:visited {
     border-bottom: 0px;
 }
 
 #projects_hidden {
-/*    margin-left: 48px;*/
     font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif;   
     display: none;
-/*    text-align: center;*/
     text-transform: capitalize;
 }
 
@@ -183,6 +200,12 @@ h4 {
     padding-right: 24px;
 }
 
+    @media ( max-width: 660px ) {
+        #lang_selec {
+            float: inherit;
+        }
+    }
+
 #lang_selec a {
     color: gray;
 }
@@ -191,6 +214,16 @@ h4 {
     color: black;
     cursor: text;
 }
+
+#nav .hide {
+    display: none;
+}
+
+    @media ( max-width: 660px ) {
+        #nav .hide {
+            display: inline;
+        }
+    }
 
 
 /*********************************************
@@ -246,7 +279,6 @@ section {
 
 .widget {
 /*    border: 1px solid pink;*/
-/*    font-family: "Suisse", "Suisse Works", times, serif;*/
     color: black;
     background-color: #eee;
     display: inline-block;
@@ -258,6 +290,7 @@ section {
     padding-bottom: 16px;  
     box-shadow: 2px 2px 5px rgba(0,0,0,0.8); 
     overflow: hidden;
+    transition: opacity 1s, height 1s;
     display: none;
 }
 
@@ -301,6 +334,13 @@ section {
     background-repeat: no-repeat;
 }
 
+    @media ( max-width: 800px ) {
+        .close {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
 /*********************************************
 
     SIDEBAR
@@ -316,6 +356,19 @@ section {
     right: 36px;
 }
 
+    @media ( max-width: 800px ) {
+        #sidebar {
+            right: 18px;
+            width: calc( 33% - 24px );
+        }
+    }
+
+    @media ( max-width: 660px ) {
+        #sidebar {
+            display: none;
+        }
+    }
+
 #contact a, #upcoming a {
     border-bottom: 0;
 }
@@ -324,9 +377,9 @@ section {
     border-bottom: 1px solid black;
 }
 
-/*#upcoming .link a {
+#upcoming .see_more_concerts a {
     border-bottom: 1px solid black;
-}*/
+}
 
 .upcoming_concert {
     margin-bottom: 12px;
@@ -337,9 +390,18 @@ section {
     margin-top: 44px;
 }
 
-.soundcloud_wrapper, #soundcloud {
-/*    border: 1px solid purple;*/
+#soundcloud iframe.hidden {
+    display: none;
 }
+
+
+
+/*********************************************
+
+    MAIN COLUMN
+
+*********************************************/
+
 
 #widget_wrapper {
 /*    border: 1px solid orange;*/
@@ -350,11 +412,19 @@ section {
     padding: 0px 0 120px 0;
 }
 
-/*********************************************
+    @media ( max-width: 800px ) {
+        #widget_wrapper {
+            left: 18px;
+            width: calc( 66% - 24px );
+        }
+    }
 
-    MAIN COLUMN
-
-*********************************************/
+    @media ( max-width: 660px ) {
+        #widget_wrapper {
+            left: 18px;
+            width: calc( 100% - 36px );
+        }
+    }
 
 .text_block {
     width: 65%;
@@ -376,6 +446,10 @@ section {
     height: auto;
     transform: translateX(-50%);
     display: inline-block;
+}
+
+.text_block iframe {
+    width: 100%;
 }
 
 .album {
@@ -505,6 +579,10 @@ section {
     margin-bottom: 12px;
 }
 
+.soundcloud_hidden {
+    display: none;
+}
+
 .project_album {
     display: inline-block;
     width: 30%;
@@ -521,6 +599,42 @@ section {
     margin-bottom: 4px;
 }
 
+.project_social_media {
+/*    border: 1px solid red;*/
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.social_media_link {
+/*    border: 1px solid orange;*/
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 16px;
+}
+
+.social_media_link a:hover {
+    border: 0;
+}
+
+.social_media_link img {
+    width: 100%;
+    height: auto;
+}
+
+.link_text {
+    order: 99;
+    width: auto;
+    align-self: center;
+    height: auto;
+}
+
+.link_text a:hover {
+    border-bottom: 1px solid black;
+}
 
 
 

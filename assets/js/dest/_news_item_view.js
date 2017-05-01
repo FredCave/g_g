@@ -21,6 +21,13 @@ app.NewsItemView = app.Widget.extend({
 
 		this.$el.html( this.template( this.model.attributes ) ).fadeIn().css("display","inline-block");
 
+		// REMOVE IMG BORDER-BOTTOM
+		this.$el.find(".text_block a").each( function(){
+			if ( $(this).children("img").length ) {
+				$(this).css("border-bottom","0px");
+			}
+		});
+
 		return this;
 
 	}

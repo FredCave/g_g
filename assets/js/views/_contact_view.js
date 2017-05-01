@@ -2,14 +2,9 @@ var app = app || {};
 
 app.ContactView = app.Widget.extend({
 
-	el: "#contact",
-
 	initialize: function (){
 
 		console.log("ContactView.initialize");
-
-		// GET EVENTS FROM PARENT
-		_.extend( this.events, app.Widget.prototype.events );
 
 		var self = this;
 
@@ -31,7 +26,9 @@ app.ContactView = app.Widget.extend({
 
 		console.log("ContactView.render");
 
-		// console.log( 34, this.model );
+		console.log( 34, this.$el );
+
+		this.$el.append("<p>TEST</p>");
 
 		this.$el.append( this.template( this.model ) );
 

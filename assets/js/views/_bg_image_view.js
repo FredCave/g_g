@@ -4,6 +4,8 @@ app.BgImageView = Backbone.View.extend({
 
 	el: "#bg_image",
 
+	slideshowRunning: false,
+
 	initialize: function (){
 
 		console.log("BgImageView.initialize");
@@ -24,17 +26,18 @@ app.BgImageView = Backbone.View.extend({
 
 	bindEvents: function () {
 
+		var self = this;
+
 		$(window).on( "resize", _.throttle( function (){
 			// RECALCULATE IMAGE
-			console.log( 29, "BG image resize" );
-			self.render( self.model.attributes );
+			self.imagesRecalc();
 		}, 500 ) );
 
 	},
 
 	template: _.template( $('#bg_image_template').html() ),
 
-	imageCalc: function ( input ) {
+	imageCalc: function ( input, resize ) {
 	
 		console.log("BgImageView.imageCalc");
 
@@ -64,7 +67,33 @@ app.BgImageView = Backbone.View.extend({
 			newSrc = img.sizes.extralarge;
 		}
 
-		img.src = newSrc;
+		if ( resize ) {
+			return newSrc;
+		} else {
+			img.src = newSrc;			
+		}
+
+	},
+
+	imagesRecalc: function () {
+
+		console.log("BgImageView.imagesRecalc");
+
+		var self = this,
+			newSrc;
+
+		// LOOP THROUGH IMAGES IN MODEL
+		images = this.model.attributes.acf.home_background_image;
+		images.forEach( function ( img ) {
+
+			newSrc = self.imageCalc( img, true );	
+
+			// IF IMAGE IS DIFFERENT TO CURRENT SRC
+			if ( newSrc !== img.image.src ) {
+				$("#" + img.image.ID).css("background-image","url(" + newSrc + ")");
+			}
+
+		});
 
 	},
 
@@ -94,6 +123,8 @@ app.BgImageView = Backbone.View.extend({
 
 		}, delay );
 
+		this.slideshowRunning = true;
+
 	},
 
 	render: function ( data ) {
@@ -115,7 +146,7 @@ app.BgImageView = Backbone.View.extend({
 		this.$el.html( this.template( this.model ) );
 
 		// IF MULTIPLE IMAGES
-		if ( images.length ) {
+		if ( images.length && this.slideshowRunning === false ) {
 			this.slideshowInit();
 		}
 

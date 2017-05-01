@@ -10,46 +10,66 @@ app.Widget = Backbone.View.extend({
 
 		this.unbind();
 
-		// CHECK IF LAST NEWS ITEM
-		if ( this.$el.hasClass("news_widget") && $("#news").children().length === 1 ) {
-			// REMOVE PARENT SECTION
-			$("#news").remove();
-		} else {
+		var self = this,
+			target = this.$el;
+
+		// IF NEWS
+		if ( this.$el.hasClass("news_widget") ) {
+
+			// IF LAST
+			if ( $("#news").children().length === 1 ) {
+				// REMOVE PARENT SECTION
+				setTimeout( function () {
+					$("#news").remove();
+				}, 1000 );
+			}
+
+			// target = this.$el;
+
+		// IF PROJECTS
+		} else if ( this.$el.hasClass("project_widget") ) {
+		
+			// IF SC WIDGET HAS BEEN CHANGED: RESET SOUNDCLOUD POPUP
+			if ( $("#soundcloud").attr("data-changed") ) {
+				new app.SoundcloudView();
+			}
+
+			// IF LAST PROJECT ITEM: CLOSE PARENT WRAPPER
+			if ( $("#projects").children().length === 1 ) {
+				// REMOVE PARENT SECTION
+				setTimeout( function () {
+					$("#projects").remove();
+				}, 1000 );
+
+			}
+
+		} 
 			
-			var self = this;
+		// SET HEIGHT IN ORDER TO ANIMATE
+		target.css( "height", this.$el.outerHeight() );
+		// FADE OUT OPACITY OF CHILD + ANIMATE HEIGHT 
+		setTimeout( function (){
 
-			// console.log( 21, this.$el.find(".widget") );
+			target.css({
+				"height" : 0,
+				"display" : "inherit",
+				"opacity" : 0					
+			});	
 
-			// SET HEIGHT IN ORDER TO ANIMATE
-			this.$el.css( "height", this.$el.outerHeight() );
-			// FADE OUT OPACITY OF CHILD + ANIMATE HEIGHT 
+			// AFTER ANIMATION: REMOVE
 			setTimeout( function (){
 
-				self.$el.css({
-					"height" : 0,
-					"display" : "inherit",
-					"opacity" : 0					
-				});	
+				// CHANGE URL
+				var prev = target.prev("section").attr("id");
+				Backbone.history.navigate( "#_" + prev );
 
-				// AFTER ANIMATION: REMOVE
-				setTimeout( function (){
+				setTimeout( function () {
+					self.remove();
+				}, 1000 );
+				
+			}, 500 );	
 
-					// IF IN MAIN COLUMN
-					if ( self.$el.parents("#widget_wrapper").length ) {
-						// CHANGE URL
-						var prev = self.$el.prev("section").attr("id");
-						Backbone.history.navigate( "#_" + prev , { trigger: true } );
-					}
-	
-					setTimeout( function () {
-						self.remove();
-					}, 1000 );
-					
-				}, 500 );	
-
-			}, 100 );
-
-		}
+		}, 100 );
 
 	}
 

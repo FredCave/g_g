@@ -27,34 +27,6 @@
             "mime_types": ""
         },
         {
-            "key": "field_58f8e0bd7fc96",
-            "label": "Main Image Size",
-            "name": "project_image_size",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "two-thirds": "2\/3",
-                "one-half": "1\/2",
-                "one-third": "1\/3",
-                "one-quarter": "1\/4"
-            },
-            "default_value": [],
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
-        },
-        {
             "key": "field_58c5bfa3b6a15",
             "label": "Image Credits",
             "name": "project_image_credits",
@@ -94,6 +66,24 @@
             "media_upload": 1
         },
         {
+            "key": "field_58f73f4b47ece",
+            "label": "Presentation Text English",
+            "name": "project_text_en",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1
+        },
+        {
             "key": "field_58c5bff0b6a16",
             "label": "Musicians",
             "name": "project_musicians",
@@ -112,13 +102,31 @@
             "media_upload": 1
         },
         {
+            "key": "field_58f73ff851c8d",
+            "label": "Musicians English",
+            "name": "project_musicians_en",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1
+        },
+        {
             "key": "field_58c5c06cb6a18",
-            "label": "Additional Media",
+            "label": "Videos",
             "name": "project_media",
             "type": "repeater",
             "instructions": "",
-            "required": "",
-            "conditional_logic": "",
+            "required": 0,
+            "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -134,8 +142,45 @@
                     "key": "field_58c5c080b6a19",
                     "label": "Media",
                     "name": "media",
-                    "type": "text",
-                    "instructions": "Add link to Soundcloud playlist or Vimeo URL here.",
+                    "type": "oembed",
+                    "instructions": "Add link Youtube or Vimeo URL here.",
+                    "required": "",
+                    "conditional_logic": "",
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "width": "",
+                    "height": ""
+                }
+            ]
+        },
+        {
+            "key": "field_58ff23208d4ab",
+            "label": "Soundcloud",
+            "name": "project_media_soundcloud",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": "",
+            "max": "",
+            "layout": "table",
+            "button_label": "Add Media",
+            "sub_fields": [
+                {
+                    "key": "field_58ff23208d4ac",
+                    "label": "Media",
+                    "name": "media",
+                    "type": "textarea",
+                    "instructions": "Add iframe embed code to Soundcloud playlist here.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -145,9 +190,9 @@
                     },
                     "default_value": "",
                     "placeholder": "",
-                    "prepend": "",
-                    "append": "",
                     "maxlength": "",
+                    "rows": "",
+                    "new_lines": "wpautop",
                     "readonly": 0,
                     "disabled": 0
                 }
@@ -269,5 +314,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1492705768
+    "modified": 1493115743
 }

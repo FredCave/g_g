@@ -5,7 +5,7 @@ $(function() {
 	// INIT MOMENT
 	moment().format();
 
-    new app.AppView();
+    var appView = new app.AppView();
 
     var appRouter = new app.MainRouter();
     Backbone.history.start({});

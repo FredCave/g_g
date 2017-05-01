@@ -11,7 +11,7 @@
         <% images = this.model.attributes.acf.home_background_image;
         _.each ( images, function( img ) { %>
 
-            <li style="background-image:url('<%= img.image.src %>')"></li>
+            <li id="<%= img.image.ID %>" style="background-image:url('<%= img.image.src %>')"></li>
 
         <% }); %>
 
@@ -208,68 +208,110 @@
 
 **********************************************/ ?>
 
-<script id="project_template" type="text/template">
+<script id="project_item_template" type="text/template">
 
-    <div class="widget project_widget" id="project-<%= this.model.id %>">
+    <div id="project-<%= this.model.id %>" class="widget_content">
+        
+        <div class="close"></div>
+     
+        <!-- IMAGE -->
+        <% if ( this.model.attributes.acf.project_image ) { %>
+            <img class="<%= this.model.attributes.acf.project_image_size %>" src="<%= this.model.attributes.acf.project_image.url %>" />
+        <% } %>
 
-        <div class="widget_content">
-            
-            <div class="close"></div>
-         
-            <!-- IMAGE -->
-            <% if ( this.model.attributes.acf.project_image ) { %>
-                <img class="<%= this.model.attributes.acf.news_image_size %>" src="<%= this.model.attributes.acf.project_image.url %>" />
+        <div class="info_wrapper">
+            <!-- IMAGE CREDITS -->
+            <% if ( this.model.attributes.acf.project_image_credits ) { %>
+                <h4 class="image_credit">
+                    <span class="fr">Crédits image :</span>
+                    <span class="en">Image credits:</span>
+                    <%= this.model.attributes.acf.project_image_credits %>
+                </h4>
             <% } %>
-
-            <div class="info_wrapper">
-                <!-- IMAGE CREDITS -->
-                <% if ( this.model.attributes.acf.project_image_credits ) { %>
-                    <h4 class="image_credit">
-                        <span class="fr">Crédits image :</span>
-                        <span class="en">Image credits:</span>
-                        <%= this.model.attributes.acf.project_image_credits %>
-                    </h4>
-                <% } %>
-                <!-- TITLE -->
-                <div class="indent_title_wrapper">
-                    <h1 class="indent_title">
-                        <%= this.model.attributes.title.rendered %>
-                    </h1>
-                </div>
-                <!-- TEXT -->
-                <div class="text_block">
-                    <%= this.model.attributes.acf.project_text %>
-                </div>
-                <!-- ADDTIONAL MEDIA -->
-                <% if ( this.model.attributes.acf.project_media.length ) { 
-                    posts = this.model.attributes.acf.project_media;
-                    _.each ( posts, function ( post ) { %>
-                        <div class="text_block">
-                            <%= post.media %>
-                        </div>
-                    <% });
-                    } %>
-                <!-- CONCERTS -->
-                <div class="project_concerts"></div>
-                <!-- DISCOGRAPHY -->
-                <div class="project_discography"></div>
-                <!-- DOCUMENTS -->
-                <% if ( this.model.attributes.acf.project_documents.length ) { %>
-                    <ul class="project_documents">
-
-                    </ul>
-                <% } %>
-                <!-- SOCIAL MEDIA -->
-                <% if ( this.model.attributes.acf.project_social_media.length ) { %>
-                    <ul class="project_social_media">
-
-                    </ul>
-                <% } %>
+            <!-- TITLE -->
+            <div class="indent_title_wrapper">
+                <h1 class="indent_title">
+                    <%= this.model.attributes.title.rendered %>
+                </h1>
             </div>
+            <!-- TEXT -->
+            <div class="text_block">
+                <div class="fr"><%= this.model.attributes.acf.project_text %></div>
+                <div class="en"><%= this.model.attributes.acf.project_text_en %></div>
+            </div>
+            <!-- MUSICIANS -->
+            <div class="text_block">
+                <div class="fr">
+                    <h1>Musiciens</h1>
+                    <%= this.model.attributes.acf.project_musicians %>        
+                </div>
+                <div class="en">
+                    <h1>Musicians</h1>
+                    <%= this.model.attributes.acf.project_musicians_en %>
+                </div>
+            </div>
+            <!-- ADDTIONAL SOUNDCLOUD -->
+            <% if ( this.model.attributes.acf.project_media_soundcloud.length ) { 
+                posts = this.model.attributes.acf.project_media_soundcloud;
+                _.each ( posts, function ( post ) { %>
+                    <div class="soundcloud_hidden">
+                        <%= post.media %>
+                    </div>
+                <% });
+                } %>
+            <!-- ADDTIONAL VIDEOS -->
+            <% if ( this.model.attributes.acf.project_media.length ) { 
+                posts = this.model.attributes.acf.project_media;
+                _.each ( posts, function ( post ) { %>
+                    <div class="text_block">
+                        <%= post.media %>
+                    </div>
+                <% });
+                } %>
+            <!-- CONCERTS -->
+            <div class="project_concerts"></div>
+            <!-- DISCOGRAPHY -->
+            <div class="project_discography"></div>
+            <!-- DOCUMENTS -->
+            <% if ( this.model.attributes.acf.project_documents.length ) { %>
+                <ul class="project_documents">
+                <% docs = this.model.attributes.acf.project_documents;
+                _.each ( docs, function ( doc ) { %>
+                    <div class="text_block">
+                        <a target="_blank" href="<%= doc.document.url %>">
+                            <%= doc.document.title %>
+                        </a>
+                    </div>
+                <% }); %>  
+                </ul>
+            <% } %>
+            <!-- SOCIAL MEDIA -->
+            <% 
+            if ( this.model.attributes.acf.project_social_media.length ) { %>
+                <ul class="project_social_media">
+                <% links = this.model.attributes.acf.project_social_media;
+                _.each ( links, function ( link ) { 
+                    // IF NO ICON: CHANGE CLASS
+                    if ( link.icon.length === 0 ) { %>
+                    <li class="social_media_link link_text">
+                    <% } else { %>
+                    <li class="social_media_link">
+                    <% } %>
+                        <a target="_blank" href="<%= link.project_social_media_link %>">
+                            <% // IF NO ICON
+                            if ( link.icon.length === 0 ) { %>
+                                <%= link.project_social_media_link %>
+                            <% } else { %>
+                                <img src="<%= link.icon %>" />
+                            <% } %>        
+                        </a>
+                    </li>
+                <% }); %>
+                </ul>
+            <% } %>
+        </div>
 
-        </div>  
-
-    </div>
+    </div>  
 
 </script>
 
@@ -404,7 +446,9 @@
                         <p class="album_title">
                             <%= post.attributes.title.rendered %>
                         </p>
-                        <p><%= post.attributes.acf.album_group[0].post_title %></p>
+                        <% if ( post.attributes.acf.album_group.length ) { %>
+                            <p><%= post.attributes.acf.album_group[0].post_title %></p>
+                        <% } %>                    
                         <p>
                             <a target="_blank" href="<%= post.attributes.acf.album_link_label %>"><%= post.attributes.acf.album_label %></a>
                         </p>
@@ -434,8 +478,6 @@
                         <!-- LOGOS -->
                         <% if ( post.attributes.acf.album_prizes.length ) { %>
                             <ul class="album_logos">
-                                <p class="fr">Soutien : </p>
-                                <p class="en">Supported by: </p>
                                 <% _.each( post.attributes.acf.album_prizes, function( logo ){ %>
                                     <li>
                                         <img src="<%= logo.album_prize.url %>" />
