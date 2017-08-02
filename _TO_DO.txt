@@ -1,8 +1,44 @@
-### MEDIA QUERIES
+SOUNDCLOUD FIX
 
-### NEWS READ MORE 
-	MAX 3 NEWS POSTS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Les dates passées sur mon site mais elle ne s'affichent pas toutes dans" concerts passées"
+
+PROJET
+
+dans chaque projet de faire apparaitre en bas la pochette de album (si il y a) en lien hypertexte vers "discographie" avec le titre en légende
+
+dans chaque projet mettre les dates passées du groupe en bas (possibilité de dérouler si pas assez de place)
+
+DISOGRAPHY
+
+nom du groupe (lien hypertexte vers page groupe), 
+
+est ce que les logos peuvent devenir redimenssionables ? certains sont trop petits
+
+LINKS
+
+possible de renommer "groups" par "groups / musicians" ? 
 
 ### CONCERTS – FILTER – SHOW ONLY CURRENT YEAR
 
-### IMG SRC SIZES – GLOBAL FUNCTION
+### NEWS – READ MORE 
+
+
+
+

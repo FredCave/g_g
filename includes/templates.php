@@ -1,150 +1,4 @@
-<?php /*******************************************
 
-    BACKGROUND IMAGE
-
-**********************************************/ ?>
-
-<script id="bg_image_template" type="text/template">
-
-	<ul>
-
-        <% images = this.model.attributes.acf.home_background_image;
-        _.each ( images, function( img ) { %>
-
-            <li id="<%= img.image.ID %>" style="background-image:url('<%= img.image.src %>')"></li>
-
-        <% }); %>
-
-    </ul>
-
-</script>
-
-<?php /*******************************************
-
-    CONTACT
-
-**********************************************/ ?>
-
-<script id="contact_template" type="text/template">
-
-    <div class="widget contact_widget">
-        <div class="widget_content">
-                     
-            <div class="title_wrapper">
-                <h1>Contact</h1>
-            </div>
-
-            <div>
-                <a href="mailto:<%= this.model.attributes.acf.contact_main %>"><%= this.model.attributes.acf.contact_main %></a>
-            </div>
-
-        </div>  
-    </div>
-
-</script>
-
-<?php /*******************************************
-
-    UPCOMING
-
-**********************************************/ ?>
-
-<script id="upcoming_template" type="text/template">
-
-    <div class="widget upcoming_widget">
-        <div class="widget_content">
-
-            <div class="title_wrapper">
-                <h1 class="fr">À Venir</h1>
-                <h1 class="en">Upcoming</h1>
-            </div>
-
-            <% 
-            i = 0;
-            _.each(posts, function( post ) { 
-                if ( i < 3 ) { %>
-                <div class="upcoming_concert">
-                    <h2><%= post.date %></h2>
-                    <% if ( post.group.length ) { %>
-                        <p><a href="#_projects/<%= post.group[0].ID %>">
-                            <%= post.group[0].post_title %>
-                        </a></p>
-                    <% } %>
-                    <p><a href="<%= post.link %>"><%= post.title %></a></p>
-                </div>
-                <% }
-                i++;
-            }); %>
-
-            <div class="link see_more_concerts">
-                <a href="#_concerts" class="fr">Voir plus de concerts</a>
-                <a href="#_concerts" class="en">See more concerts</a>
-            </div>
-
-        </div>
-    </div>  
-
-</script>
-
-<?php /*******************************************
-
-    PLAYLIST
-
-**********************************************/ ?>
-
-<script id="playlist_template" type="text/template">
-
-    <div class="widget soundcloud_widget">
-        <div class="widget_content">
-
-            <%= this.playlist %>
-
-        </div>
-    </div>  
-
-</script>
-
-<?php /*******************************************
-
-    NEWS
-
-**********************************************/ ?>
-
-<script id="news_item_template" type="text/template">
-
-    <div class="widget_content">
-		
-        <div class="close"></div>
-        <!-- IMAGE -->
-        <img class="<%= acf.news_image_size %>" src="<%= acf.news_image.url %>" />
-        <div class="info_wrapper">
-            <!-- IMAGE CREDITS -->
-            <h4 class="image_credit">
-                <span class="fr">Crédits image :</span>
-                <span class="en">Image credits:</span>
-                <%= acf.news_image_credits %>
-            </h4>
-            <!-- TITLE -->
-            <div class="indent_title_wrapper">
-                <h1 class="indent_title">
-                    <span class="fr"><%= title.rendered %></span>
-                    <span class="en"><%= title.rendered %></span>
-                </h1>
-            </div>
-            <!-- TEXT -->
-            <div class="text_block fr"><%= acf.news_text %></div>
-            <% if ( acf.news_text_en.length ) { %>
-                <div class="text_block en"><%= acf.news_text_en %></div>
-            <% } else { %>
-                <div class="text_block en">No translation available.</div>
-                <div class="text_block en"><%= acf.news_text %></div>
-            <% } %>
-            
-        </div>
-
-    </div>
-
-</script>
 
 <?php /*******************************************
 
@@ -161,7 +15,9 @@
             <div class="close"></div>
                  
             <!-- IMAGE -->
-            <img class="<%= acf.news_image_size %>" src="<%= acf.biography_image.url %>" />
+            <% var image = app.App.imageCalc( acf.biography_image.sizes, acf.news_image_size ); %>
+            <%= image %>
+
             <div class="info_wrapper">
                 <!-- IMAGE CREDITS -->
                 <h4 class="image_credit">
@@ -183,6 +39,14 @@
                 <% } else { %>
                     <div class="text_block en">No translation available.</div>
                     <div class="text_block en"><%= acf.biography_text %></div>
+                <% } %>
+                <!-- IF IMAGES LINK -->
+                <% if ( acf.biography_link_images.length ) { %>
+                    <div class="text_block">
+                        <a target="_blank" href="<%= acf.biography_link_images %>">    
+                            Images
+                        </a>  
+                    </div>                    
                 <% } %>
                 <!-- IF DOCUMENTS -->
                 <% if ( acf.biography_documents.length ) { %>
@@ -213,10 +77,11 @@
     <div id="project-<%= this.model.id %>" class="widget_content">
         
         <div class="close"></div>
-     
-        <!-- IMAGE -->
-        <% if ( this.model.attributes.acf.project_image ) { %>
-            <img class="<%= this.model.attributes.acf.project_image_size %>" src="<%= this.model.attributes.acf.project_image.url %>" />
+
+        <!-- IMAGE -->         
+        <% if ( acf.project_image ) {
+            var image = app.App.imageCalc( acf.project_image.sizes, acf.project_image_size ); %>
+            <%= image %>
         <% } %>
 
         <div class="info_wrapper">
@@ -262,12 +127,31 @@
             <!-- ADDTIONAL VIDEOS -->
             <% if ( this.model.attributes.acf.project_media.length ) { 
                 posts = this.model.attributes.acf.project_media;
+
                 _.each ( posts, function ( post ) { %>
                     <div class="text_block">
                         <%= post.media %>
                     </div>
                 <% });
                 } %>
+            <!-- PRESS SPACE -->
+            <% if ( this.model.attributes.acf.project_press.length ) { %>
+                <div class="text_block">
+                    <div class="fr">
+                        <h1>Presse</h1>
+                        <%= this.model.attributes.acf.project_press %>        
+                    </div>
+                </div>
+            <%  } %>  
+            <% if ( this.model.attributes.acf.project_press_en.length ) { %>
+                <div class="text_block">
+                    <div class="en">
+                        <h1>Press</h1>
+                        <%= this.model.attributes.acf.project_press_en %>        
+                    </div>
+                </div>
+            <%  } %> 
+         
             <!-- CONCERTS -->
             <div class="project_concerts"></div>
             <!-- DISCOGRAPHY -->
@@ -372,7 +256,26 @@
 </script>
 
 <script id="concerts_sub_template" type="text/template">
-         
+    
+    <% // GET YEARS 
+
+    var yearArray = [];
+
+    _.each(posts, function( post ){
+    
+        // PARSE RESULT
+        var data = post.attributes,
+            year = data.date.split("–")[2].split(",")[0];
+        if ( yearArray.indexOf(year) == -1 ){
+            yearArray.push(year);
+        }
+        
+    }); 
+
+    console.log( 452, yearArray );
+
+    %>
+
     <% _.each(posts, function( post ){
         // PARSE RESULT
         var data = post.attributes; %>
@@ -381,11 +284,17 @@
             <div class="concert_date"><h2><%= data.date %></h2></div>
             <div class="concert_info">
                 <% if ( data.group.length ) { %>
-                    <a href="#_projects/<%= data.group[0].ID %>">
-                        <p class="concert_group"><%= data.group[0].post_title %></p>
-                    </a>
+                    <p class="concert_group">
+                        <a href="#!projects/<%= data.group[0].ID %>">
+                            <%= data.group[0].post_title %>
+                        </a>
+                    </p>
                 <% } %>
-                <p><a target="_blank" href="<%= data.link %>"><%= data.title %></a></p>
+                <p>
+                    <a target="_blank" href="<%= data.link %>">
+                        <%= data.title %>     
+                    </a>
+                </p>
             </div>
         </div>
     <% }); %>
@@ -447,7 +356,11 @@
                             <%= post.attributes.title.rendered %>
                         </p>
                         <% if ( post.attributes.acf.album_group.length ) { %>
-                            <p><%= post.attributes.acf.album_group[0].post_title %></p>
+                            <p>
+                                <a class="internal" href="#!projects/<%= post.attributes.acf.album_group[0].ID %>">
+                                    <%= post.attributes.acf.album_group[0].post_title %>
+                                </a>
+                            </p>
                         <% } %>                    
                         <p>
                             <a target="_blank" href="<%= post.attributes.acf.album_link_label %>"><%= post.attributes.acf.album_label %></a>
@@ -515,7 +428,8 @@
 
             <!-- GROUPS -->
             <% if ( this.model.attributes.acf.links_groups.length ) { %>
-                <h2>Groups</h2>
+                <h2 class="fr">Groupes/Musiciens</h2>
+                <h2 class="en">Groups/Musicians</h2>
                 <ul>
                 <% _.each( this.model.attributes.acf.links_groups, function( post ){ %>
                     <li><a target="_blank" href="<%= post.link_url %>"><%= post.link_title %></a></li>  

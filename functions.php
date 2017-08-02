@@ -98,38 +98,62 @@ function create_post_types() {
 add_theme_support( 'post-thumbnails' );
 add_image_size( 'extralarge', 1200, 1200 );
 
-// function image_object( $image ) {
-//     if( !empty($image) ): 
-//         $width = $image['sizes'][ 'thumbnail-width' ];
-//         $height = $image['sizes'][ 'thumbnail-height' ];
-//         $thumb = $image['sizes'][ "thumbnail" ]; // 300
-//         $medium = $image['sizes'][ "medium" ]; // 600
-//         $large = $image['sizes'][ "large" ]; // 900
-//         $extralarge = $image['sizes'][ "extralarge" ]; // 1200
-//         $id = $image["id"];
-//         // DEFAULT IS FULL WIDTH
-//         if ( $height / $width >= 0.5 && $height / $width < 1 ) {
-//             $class = "two-thirds";
-//         } else if ( $height / $width >= 1 ) {
-//             $class = "one-third";
-//             // PORTRAIT MODE
-//             $thumb = $image['sizes'][ "medium" ];
-//             $medium = $image['sizes'][ "large" ];
-//             $large = $image['sizes'][ "extralarge" ]; 
-//         } else {
-//             $class = "full-width"; 
-//         }
-//         echo "<img class='" . $class . " ' 
-//             alt='Le Ton Vertical' 
-//             width='" . $width . "' 
-//             height='" . $height . "' 
-//             data-thm='" . $thumb . "' 
-//             data-med='" . $medium . "' 
-//             data-lrg='" . $large . "' 
-//             data-xlg='" . $extralarge . "' 
-//             src=' " . $thumb . "' />";
-//     endif;
-// }
+function image_object( $image, $class ) {
+    if( !empty($image) ): 
+        $width = $image['sizes'][ 'thumbnail-width' ];
+        $height = $image['sizes'][ 'thumbnail-height' ];
+        $thumb = $image['sizes'][ "thumbnail" ]; // 300
+        $medium = $image['sizes'][ "medium" ]; // 600
+        $large = $image['sizes'][ "large" ]; // 900
+        $extralarge = $image['sizes'][ "extralarge" ]; // 1200
+        $id = $image["id"];
+        // // DEFAULT IS FULL WIDTH
+        // if ( $height / $width >= 0.5 && $height / $width < 1 ) {
+        //     $class = "two-thirds";
+        // } else if ( $height / $width >= 1 ) {
+        //     $class = "one-third";
+        //     // PORTRAIT MODE
+        //     $thumb = $image['sizes'][ "medium" ];
+        //     $medium = $image['sizes'][ "large" ];
+        //     $large = $image['sizes'][ "extralarge" ]; 
+        // } else {
+        //     $class = "full-width"; 
+        // }
+        echo "<img class='" . $class . " ' 
+            alt='Le Ton Vertical' 
+            width='" . $width . "' 
+            height='" . $height . "' 
+            data-thm='" . $thumb . "' 
+            data-med='" . $medium . "' 
+            data-lrg='" . $large . "' 
+            data-xlg='" . $extralarge . "' 
+            src=' " . $thumb . "' />";
+    endif;
+}
+
+// GET BACKGROUND IMAGEs
+
+function get_bg_images () {
+
+    $images = get_field( "home_background_image", 72 );
+    if ( $images ) {
+        echo "<ul>";
+        foreach ( $images as $image ) { ?>
+
+            <li id="<?php echo $image["image"]["ID"]; ?>" 
+                data-ratio="<?php echo $image["image"]["width"] / $image["image"]["height"]; ?>" 
+                data-thm="<?php echo $image["image"]["sizes"]["thumbnail"]; ?>" 
+                data-med="<?php echo $image["image"]["sizes"]["medium"]; ?>" 
+                data-lrg="<?php echo $image["image"]["sizes"]["large"]; ?>" 
+                data-xlg="<?php echo $image["image"]["sizes"]["extralarge"]; ?>" 
+                style="background-image:url('<?php echo $image["image"]["sizes"]["thumbnail"]; ?>')">                
+            </li>
+
+        <?php }
+        echo "</ul>";
+    }
+
+}
 
 // REST API ENDPOINTS
 
@@ -137,8 +161,59 @@ function date_cmp ($a, $b) {
     return strcmp( $a["date"], $b["date"] );
 }
 
-function upcoming_concerts () {
-    $agenda_query = new WP_Query( "post_type=concerts" );
+function get_upcoming_concerts ( $max ) {
+
+    if ( is_null( $max ) ) {
+        $max = 99;
+    }
+
+    $args = array(
+        "post_type"         => "concerts",
+        "posts_per_page"    => -1
+    );
+    $agenda_query = new WP_Query( $args );
+    $concerts = array();
+    // LOOP THROUGH POSTS
+    if ( $agenda_query->have_posts() ) :
+        $i = 0;
+        while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
+            // FILTER USING ISPAST FILTER
+            if ( !isPast( get_field("concert_date") ) ) {
+                $concerts[] = array(
+                    'title' => get_the_title(),
+                    'date' => get_field("concert_date"),
+                    'link' => get_field("concert_venue_link"),
+                    'group' => get_field("concert_group")
+                );
+            }
+            $i++;
+        endwhile;
+        wp_reset_postdata();
+    endif;
+
+    // SORT BY DATE
+    usort( $concerts, "date_cmp" );
+
+    // RETURN ONLY REQUESTED AMOUNT
+    $return_data = array();
+    $i = 0;
+    while ( $i < $max ) {
+        $return_data[] = $concerts[$i];
+        $i++;
+    }
+
+    return $return_data;
+
+}
+
+
+/* function upcoming_concerts () {
+
+    $args = array(
+        "post_type"         => "concerts",
+        "posts_per_page"    => -1
+    );
+    $agenda_query = new WP_Query( $args );
     $data = array();
     // LOOP THROUGH POSTS
     if ( $agenda_query->have_posts() ) :
@@ -166,15 +241,20 @@ function upcoming_concerts () {
         return null;
     }    
     return $data;
-}
+} */
 
 function previous_concerts () {
-    $agenda_query = new WP_Query( "post_type=concerts" );
+    $args = array(
+        "post_type"         => "concerts",
+        "posts_per_page"    => -1
+    );
+    $agenda_query = new WP_Query( $args );
     $data = array();
     // LOOP THROUGH POSTS
     if ( $agenda_query->have_posts() ) :
         $i = 0;
         while ( $agenda_query->have_posts() ) : $agenda_query->the_post(); 
+
             // FILTER USING ISPAST FILTER
             if ( isPast( get_field("concert_date") ) ) {
                 $data[] = array(
@@ -250,10 +330,91 @@ function get_projects () {
     $projects_query = new WP_Query( "post_type=projects" ); 
     if ( $projects_query->have_posts() ) :
         while ( $projects_query->have_posts() ) : $projects_query->the_post(); ?>
-            <li><a href="#_projects/<?php the_ID(); ?>"><?php the_title(); ?></a></li>
+            <li><a href="#!projects/<?php the_ID(); ?>"><?php the_title(); ?></a></li>
         <?php
         endwhile;  
     endif;    
+}
+
+// GET NEWS FOR INITIAL LOAD
+
+function gg_get_news () {
+    
+    $args = array(
+        "post_type"         => "news",
+        "posts-per-page"    => 3
+    );
+    $news_query = new WP_Query( $args ); 
+    if ( $news_query->have_posts() ) :
+        while ( $news_query->have_posts() ) : $news_query->the_post(); ?>
+                
+            <div class="widget news_widget">      
+    
+                <div class="widget_content">
+            
+                    <div class="close"></div>
+
+                    <!-- IMAGE -->
+                    <?php 
+                    $image = get_field("news_image");
+                    $image_size = get_field("news_image_size");
+                    image_object( $image, $image_size );
+                    ?>
+
+                    <div class="info_wrapper">
+                        <!-- IMAGE CREDITS -->
+                        <h4 class="image_credit">
+                            <span class="fr">Crédits image :</span>
+                            <span class="en">Image credits:</span>
+                            <?php the_field("news_image_credits"); ?>
+                        </h4>
+                        <!-- TITLE -->
+                        <div class="indent_title_wrapper">
+                            <h1 class="indent_title">
+                                <span class="fr"><?php the_title(); ?></span>
+                                <span class="en"><?php the_field("news_title_english"); ?></span>
+                            </h1>
+                        </div>
+                        <!-- TEXT -->
+                        <div class="text_block fr"><?php the_field("news_text"); ?></div>
+                        <?php if ( get_field("news_text_en") ) { ?>
+                            <div class="text_block en"><?php the_field("news_text_en"); ?></div>
+                        <?php } else { ?>
+                            <div class="text_block en">No translation available.</div>
+                            <div class="text_block en"><?php the_field("news_text"); ?></div>
+                        <?php } ?>
+                        
+                    </div>
+
+                </div>
+
+            </div>
+
+        <?php
+        endwhile;  
+    endif;  
+
+}
+
+// IMAGE TO BE SHARED ON FACEBOOK AND TWITTER
+
+function get_soc_med_image () {
+
+    $args = array(
+        "name"  => "home-page",
+    );
+    $img_query = new WP_Query( $args );
+    // LOOP THROUGH POSTS
+    if ( $img_query->have_posts() ) :
+        while ( $img_query->have_posts() ) : $img_query->the_post(); 
+
+            $image = get_field("home_social_media_image");
+            echo $image["url"];
+
+        endwhile;
+        wp_reset_postdata();
+    endif;
+
 }
 
 ?>
