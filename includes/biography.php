@@ -1,6 +1,6 @@
 <?php 
 $args = array(
-    "p"              => 57
+    "p" => 57
 );
 $bio_query = new WP_Query( $args ); 
 if ( $bio_query->have_posts() ) :
@@ -12,18 +12,20 @@ if ( $bio_query->have_posts() ) :
                 <div class="close"></div>
 
                 <?php // IMAGE
-                /* <% var image = app.App.imageCalc( acf.biography_image.sizes, acf.news_image_size ); %>
-                <%= image %>  ?>
+                $image = get_field("biography_image");
+                image_object( $image ); ?>
 
                 <div class="info_wrapper">
+
                     <!-- IMAGE CREDITS -->
                     <?php if ( get_field("biography_image_credit") ) { ?>
                         <h4 class="image_credit">
                             <span class="fr">Crédits image :</span>
                             <span class="en">Image credits:</span>
-                            <%= acf.biography_image_credit %>
+                            <?php the_field("biography_image_credit"); ?>
                         </h4>
                     <?php } ?>
+
                     <!-- TITLE -->
                     <div class="indent_title_wrapper">
                         <h1 class="indent_title">
@@ -31,33 +33,38 @@ if ( $bio_query->have_posts() ) :
                             <span class="en">Biography</span>
                         </h1>
                     </div>
-                    <!-- TEXT -->
-                    <div class="text_block fr"><%= acf.biography_text %></div>
-                    <% if ( acf.biography_text_en.length ) { %>
-                        <div class="text_block en"><%= acf.biography_text_en %></div>
-                    <% } else { %>
-                        <div class="text_block en">No translation available.</div>
-                        <div class="text_block en"><%= acf.biography_text %></div>
-                    <% } %>
-                    <!-- IF IMAGES LINK -->
-                    <% if ( acf.biography_link_images.length ) { %>
-                        <div class="text_block">
-                            <a target="_blank" href="<%= acf.biography_link_images %>">    
-                                Images
-                            </a>  
-                        </div>                    
-                    <% } %>
-                    <!-- IF DOCUMENTS -->
-                    <% if ( acf.biography_documents.length ) { %>
-                        <div class="text_block">
-                            <% _.each( acf.biography_documents, function( doc ) { %>
-                                <a target="_blank" href="<%= doc.biography_document.url %>">    <%= doc.biography_document.title %>
-                                </a>
-                            <% }); %>    
-                        </div>                    
-                    <% } %>
 
-                </div> */ ?>
+                </div><!-- END OF .INFO_WRAPPER -->
+
+                <!-- TEXT -->
+                <div class="text_block fr"><?php the_field("biography_text"); ?></div>
+                <?php if ( get_field("biography_text_en") ) { ?>
+                    <div class="text_block en"><?php the_field("biography_text_en"); ?></div>
+                <?php } else { ?>
+                    <div class="text_block en">No translation available.</div>
+                    <div class="text_block en"><?php the_field("biography_text"); ?></div>
+                <?php } ?>
+
+                <!-- IF IMAGES LINK -->
+                <?php if ( get_field("biography_link_images") ) { ?>
+                    <div class="text_block">
+                        <a target="_blank" href="<?php the_field("biography_link_images"); ?>">    
+                            Images
+                        </a>  
+                    </div>                    
+                <?php } ?>
+
+                <!-- IF DOCUMENTS -->
+                <?php if ( have_rows("biography_documents") ) { ?>
+                    <div class="text_block">
+                        <?php while ( have_rows("biography_documents") ) : the_row(); 
+                            $document = get_sub_field("biography_document"); ?>
+                            <a target="_blank" href="<?php echo $document["url"]; ?>">    
+                                <?php echo $document["title"]; ?>
+                            </a>
+                        <?php endwhile; ?>
+                    </div>                    
+                <?php } ?>
 
             </div>
         </div>

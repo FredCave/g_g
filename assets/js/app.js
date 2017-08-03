@@ -18,6 +18,7 @@ app.App = {
 
 		Background.init();
 		Sidebar.init();
+		Widgets.init();
 
 		setTimeout( function(){
 			self.mQBreakpoints();

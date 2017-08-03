@@ -161,6 +161,10 @@ function date_cmp ($a, $b) {
     return strcmp( $a["date"], $b["date"] );
 }
 
+function year_cmp ($a, $b) {
+    return strcmp( $a, $b );
+}
+
 function get_upcoming_concerts ( $max ) {
 
     if ( is_null( $max ) ) {

@@ -1,8 +1,10 @@
+PROJECTS – SEE NOTES BELOW
+
 SOUNDCLOUD FIX
 
+NEWS – READ MORE 
 
-
-
+LAZYLOAD ALL IMAGES
 
 
 
@@ -25,20 +27,12 @@ dans chaque projet de faire apparaitre en bas la pochette de album (si il y a) e
 
 dans chaque projet mettre les dates passées du groupe en bas (possibilité de dérouler si pas assez de place)
 
-DISOGRAPHY
-
-nom du groupe (lien hypertexte vers page groupe), 
-
-est ce que les logos peuvent devenir redimenssionables ? certains sont trop petits
-
-LINKS
-
-possible de renommer "groups" par "groups / musicians" ? 
-
-### CONCERTS – FILTER – SHOW ONLY CURRENT YEAR
-
-### NEWS – READ MORE 
 
 
 
 
+RESPONSES
+
+DISOGRAPHY – nom du groupe (lien hypertexte vers page groupe) – ALREADY VISIBLE AND LINKED
+
+DISCOGRAPHY LOGOS – YOU CAN REDIMENSION THEM – MAX SIZE IS 64px

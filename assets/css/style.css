@@ -106,7 +106,7 @@ body {
 
 a, a:visited {
     font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif;  
-/*    font-size: 1.1em; */ 
+    font-size: 1.1em;  
     color: black;
     text-decoration: none;
 /*    border-bottom: 1px solid black;*/
@@ -128,7 +128,7 @@ ul, li {
 
 h1, h2, h3, h4 {
     font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif; 
-/*    font-size: 1.1em;  */   
+    font-size: 1.1em;     
 }
 
 h1, h2 {
@@ -339,7 +339,7 @@ section {
     box-shadow: 2px 2px 5px rgba(0,0,0,0.8); 
     overflow: hidden;
 /*    transition: opacity 1s, height 1s;*/
-    display: none;
+/*    display: none;*/
 }
 
 .widget_content {
@@ -472,6 +472,7 @@ section {
 .upcoming_concert {
     margin-bottom: 12px;
     font-family: "Frank", "Franklin Gothic", helvetica, arial, sans-serif; 
+    font-size: 1.1em;  
 }
 
 #soundcloud {
@@ -615,8 +616,15 @@ section {
 /*    border: 1px solid green;*/
     display: inline-block;
     margin: 12px 12px 0 0 ;
-    width: 64px;
+    width: auto;
+    height: 64px;
     vertical-align: middle;
+}
+
+.album_logos li img {
+    height: auto;
+    width: auto;
+    max-height: 100%;
 }
 
 .title_wrapper {
@@ -652,6 +660,11 @@ section {
 
 .concert {
     margin-bottom: 12px;
+    display: none;
+}
+
+.concert_visible {
+    display: block;
 }
 
 .concert > div {
@@ -673,13 +686,17 @@ section {
 /*    border: 1px solid red;*/
     margin-bottom: 12px;
     text-align: center; 
-    display: none;
 }
 
 .concerts_filter li {
-    border-bottom: 1px solid black;
+    border-bottom: 0px solid black;
     padding: 2px;
+    margin: 0 12px;
     display: inline-block;
+}
+
+.concerts_list {
+    margin-bottom: 24px;
 }
 
 .no-concerts {
